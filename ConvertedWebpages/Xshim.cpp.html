@@ -1,0 +1,129 @@
+<DOCTYPE !HTML>
+<html>
+  <head>
+    <Title>Xshim.cpp</Title>
+    <style>
+      body {
+        padding:15px 40px;
+        font-family: Consolas;
+        font-size: 1.25em;
+        font-weight: normal;
+     }
+      </style>
+      <script src="../script.js"></script>
+  </head>
+
+  <body>
+    <h3>Dependencies: 
+      <a href="shim.h.html">shim.h</a>
+    </h3>    <pre>
+<button onclick = showHideClass('toggleMethodDisplay')> Show or Hide Method Contents</button>
+ <div class = " absolute"> 
+<button onclick = showHideClass('toggleClass')> Classes</button>
+<button onclick = showHideClass('toggleFunction')> Function</button>
+<button onclick = showHideClass('toggleComments')> Comments</button>
+</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">/////////////////////////////////////////////////////////////////////////////</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">// Shim.cpp       : provides definitions and test stub for Shim.h          //</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">// ver 1.0                                                                 //</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">//                                                                         //</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">// Application    : CSE-687 C++/CLI Shim demostration                      //</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">// Platform       : Visual Studio 2017 Community Edition                   //</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">// Author         : Abinav Murugadass Syracuse University				   //</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">/////////////////////////////////////////////////////////////////////////////</div>
+#include "shim.h"
+#include&lt;iostream&gt;
+
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">//------&lt; shim constructor that instantiates the client using the object factory &gt;-------------------------------</div>
+shim::shim()
+<div class = "toggleMethodDisplay toggleFunction" style= "display = none;">{
+
+
+	ObjectFactory factory;
+	client = factory.createClient();
+	Console::WriteLine("\n\t\t-&gt;The Shim is Created here!");
+	Console::Write("\n\t\t\t-&gt; Shim instantiated Executive as ICppClient* which owns an instance of code publisher\n");
+}</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">//------&lt;shim Destructor that deletes the client object &gt;-------------------------------</div>
+
+shim::~shim()
+<div class = "toggleMethodDisplay toggleFunction" style= "display = none;">{
+	delete client;
+	Console::WriteLine("\n the instance of executive is destroyed and shim is destroyed too!");
+}</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">//-----&lt; convert std:string to Sysem::String&gt;---------</div>
+
+String^ shim::stdStrToSysStr(const std::string& str)
+<div class = "toggleMethodDisplay toggleFunction" style= "display = none;">{
+	return gcnew String(str.c_str());
+}</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">//-----&lt; convert System::String to std::string&gt;---------</div>
+
+std::string shim::sysStrToStdStr(String^ str)
+<div class = "toggleMethodDisplay toggleFunction" style= "display = none;">{
+	std::string temp;
+	for (int i = 0; i &lt; str-&gt;Length; ++i) {
+		temp += static_cast&lt;char&gt;(str[i]);
+	}
+	return temp;
+}</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">//-----&lt;Calls the process command line function of the client&gt;---------</div>
+
+void shim::processcmdargs(int argc, char** argv)
+<div class = "toggleMethodDisplay toggleFunction" style= "display = none;">{
+	client-&gt;processcmdargs(argc, argv);
+}</div>
+
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">//-----&lt;Gets the list of commands from the GUI and converts into the format that needs to be given to the Publisher&gt;---------</div>
+
+void shim::getcmd(List&lt;String^&gt;^ args)
+<div class = "toggleMethodDisplay toggleFunction" style= "display = none;">{
+	int argc = args-&gt;Count;
+	char** argv = new char*[argc];
+	for (int i = 0; i &lt; argc; i++) {
+		std::string arg = sysStrToStdStr(args[i]);
+		argv[i] = new char[args[i]-&gt;Length];
+		strcpy_s(argv[i], args[i]-&gt;Length + 1, arg.c_str());
+	}
+	processcmdargs(argc, argv);
+}</div>
+
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">//------------------&lt;Returns the output directory of the converted files from the converter for the GUI&gt;----------------</div>
+String^ shim::returnOutputDir()
+<div class = "toggleMethodDisplay toggleFunction" style= "display = none;">{
+	outputDir = stdStrToSysStr(client-&gt;outputDir());
+	return outputDir;
+}</div>
+
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">//--------&lt;Test stub for the shim project&gt;---------------</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">//--------&lt;need to change proerties from dll to exe and the preprocessor to test the shim&gt;-----------</div>
+#ifdef TEST_SHIM
+<div class = "toggleMethodDisplay toggleFunction" style= "display = none;">int main(array&lt;String^&gt; ^args) {
+	shim localShim;  <div class = "toggleMethodDisplay toggleComments" style= "display = none;">// C++ style construction</div>
+  <div class = "toggleMethodDisplay toggleComments" style= "display = none;">//Shim^ localshim = gcnew Shim(); // managed heap allocation and construction</div>
+	int argc = 5;
+	char** argv = new char*[argc];
+	argv[0] = "\0";
+	argv[1] = "../";
+	argv[2] = "/s";
+	argv[3] = "*.h";
+	argv[4] = "[A](.*)";
+	localShim.processcmdargs(argc, argv);
+
+
+	Console::Write("\n\n  Shim posting	 to CppClass:");
+	Console::Write("\n =======================================\n");
+
+
+	Console::Write("\n\n  Shim getting 10 messages from CppClass:");
+	Console::Write("\n =========================================\n");
+
+
+	Console::Write("\n\n  Finished demonstration.");
+	Console::Write("\n  Shim dtor is automatically called after 'main' goes out of scope.\n");
+	return 0;
+}</div>
+#endif
+    </pre>
+  </body>
+</html>

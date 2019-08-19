@@ -1,0 +1,118 @@
+<DOCTYPE !HTML>
+<html>
+  <head>
+    <Title>XICodePublisher.h</Title>
+    <style>
+      body {
+        padding:15px 40px;
+        font-family: Consolas;
+        font-size: 1.25em;
+        font-weight: normal;
+     }
+      </style>
+      <script src="../script.js"></script>
+  </head>
+
+  <body>
+    <h3>Dependencies: 
+      <a href="Converter.h.html">Converter.h</a>
+      <a href="Display.h.html">Display.h</a>
+      <a href="DirExplorerN.h.html">DirExplorerN.h</a>
+      <a href="CodeUtilities.h.html">CodeUtilities.h</a>
+      <a href="Logger.h.html">Logger.h</a>
+    </h3>    <pre>
+<button onclick = showHideClass('toggleMethodDisplay')> Show or Hide Method Contents</button>
+ <div class = " absolute"> 
+<button onclick = showHideClass('toggleClass')> Classes</button>
+<button onclick = showHideClass('toggleFunction')> Function</button>
+<button onclick = showHideClass('toggleComments')> Comments</button>
+</div>
+#pragma once
+
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">///////////////////////////////////////////////////////////////////////////</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">// ICodePublisher.h : defines facade/executive for OOD Pr3 S19           //</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">// ver 1.0                                                               //</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">//                                                                       // </div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">// Application   : OOD-S19 Project 3									 //</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">// Platform      : Visual Studio Community 2017, Windows 10 Pro x64      //</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">// Author        : Abinav Murugadass, Syracuse University                //</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">// Source		 : Ammar Salman  313/788-4694, assalman@syr.edu          //</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">///////////////////////////////////////////////////////////////////////////</div>
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">/*
+*  Package Operations:
+* =======================
+*  This Package defines the Interface to the Code Publisher. The IExecutive is an abstract class that
+*  has the following virtual methods:
+*		- processcmdargs(int argc, char** argv)
+*       - outputDir()
+*       - ~IExecutive()
+* These are inherited and overriden in the code publisher
+* This package also defines an Object Factory that builds the Publisher with an Object Factory returning a pointer
+* to the instance of the derived class.
+*
+*  Required Files:
+* =======================
+*  ICodePublisher.h CodePublisher.cpp CodeUtilities.h
+*  Converter.h Converter.cpp DirExplorerN.h DirExplorerN.cpp
+*  Display.h Display.cpp Logger.h Logger.cpp
+*
+*  Maintainence History:
+* =======================
+*  ver 1.0 - 14 April 2019
+*  - first release
+*/</div>
+
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include "../Converter/Converter.h"
+#include "../Display/Display.h"
+#include "../DirExplorer-Naive/DirExplorerN.h"
+#include "../UtilitiesCodePublisher/CodeUtilities/CodeUtilities.h"
+#include "../Logger/Logger.h"
+
+
+using namespace UtilitiesCodePublisher;
+<div class = "toggleMethodDisplay toggleComments" style= "display = none;">//using namespace Logger_code_publisher;</div>
+using namespace FileSystem;
+
+class CodePublisher
+<div class = "toggleMethodDisplay toggleClass" style= "display = none;">{
+public:
+	CodePublisher();
+<div class = "toggleMethodDisplay toggleFunction" style= "display = none;">	std::vector&lt;std::string&gt; getfiles() { return files_; }
+	bool processCommandLineArgs(int argc, char ** argv);
+
+	void workingDirectory(const std::string& dir);
+	const std::string& workingDirectory() const;
+
+	void outputDirectory(const std::string& dir);
+	const std::string& outputDirectory() const;
+
+	bool extractFiles();
+
+	void publish();
+	void publish(const std::string& file);
+	void publish(const std::vector&lt;std::string&gt;& files);
+	<div class = "toggleMethodDisplay toggleComments" style= "display = none;">//std::vector&lt;std::string&gt; getFiles();</div>
+
+	void doAnalysis(int argc, char** argv);
+
+	UtilitiesCodePublisher::DisplayMode displayMode() const;
+	UtilitiesCodePublisher::ProcessCmdLine *pcl_;
+	<div class = "toggleMethodDisplay toggleComments" style= "display = none;">//~ICodePublisher() override;</div>
+
+
+private:
+
+	CodeConverter cconv_;
+	Display display_;
+
+	std::string dirIn_;
+
+	std::string dirOut_;
+	std::vector&lt;std::string&gt; files_;
+};</div>
+
+    </pre>
+  </body>
+</html>

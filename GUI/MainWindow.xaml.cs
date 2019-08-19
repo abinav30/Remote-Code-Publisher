@@ -256,11 +256,11 @@ namespace WpfApp1
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-      string[] args = Environment.GetCommandLineArgs();
-            System.Console.WriteLine(args);
+      //string[] args = Environment.GetCommandLineArgs();
+           // System.Console.WriteLine(args);
       try{
-           selfPort = int.Parse(args[1]);
-           serverPort = int.Parse(args[2]);
+           selfPort = 8082;//int.Parse(args[1]);
+                serverPort = 8080;//int.Parse(args[2]);
       }
       catch(Exception er) { Console.WriteLine("{0} Exception caught.", er); }
       endPoint_ = new CsEndPoint();
